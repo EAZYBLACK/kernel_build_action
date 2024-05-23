@@ -391,7 +391,7 @@ runs:
              fi
          elif [ ${{ inputs.android-ndk }} = false ] && [ ${{ inputs.aosp-gcc }} = true ]; then
              export CLANG_PATH=$HOME/clang
-             export PATH=$CLANG_PATH/bin:$PATH
+             export PATH=$PATH:$CLANG_PATH/bin
              make -j$(nproc --all) CROSS_COMPILE=$HOME/gcc-64/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=$HOME/gcc-32/bin/arm-linux-androideabi- CLANG_TRIPLE=aarch64-linux-gnu- CC=clang ARCH=${{ inputs.arch }} O=out ${{ inputs.config }}
              if [ ${{ inputs.ccache }} = true ]; then
                  export USE_CCACHE=1
