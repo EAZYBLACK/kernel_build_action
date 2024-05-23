@@ -13,19 +13,14 @@ jobs:
 
     steps:
     - name: Build Kernel
-      uses: dabao1955/kernel_build_action@main
+      uses: EAZYBLACK/kernel_build_action@main
       with:
-          kernel-url: https://github.com/AcmeUI-Devices/android_kernel_xiaomi_cas
-          kernel-dir: msm-4.19
-          branch: taffy
-          config: cas_defconfig
+          kernel-url: https://github.com/EmanuelCN/android_kernel_lge_sdm845
+          branch: pelt-temp
+          config: lineageos_judyln_defconfig
           arch: arm64
+          other-clang-url: https://github.com/kdrag0n/proton-clang
           aosp-gcc: true
-          aosp-clang: true
-          ksu: true
-          ksu-version: main
-          android-version: 12
-          aosp-clang-version: r383902
-          python-27: true
-          disable-lto: true
+          submodule: true
+          other-clang-branch: master
           anykernel3: true
