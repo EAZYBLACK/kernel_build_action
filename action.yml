@@ -382,7 +382,7 @@ runs:
          mkdir out -p -v
          if [ ${{ inputs.android-ndk }} = true ]; then
              export CLANG_PATH=$HOME/android-ndk-${{ inputs.android-ndk-version }}/toolchains/llvm/prebuilt/linux-x86_64
-             export PATH=$CLANG_PATH/bin:$PATH
+             export PATH=$CLANG_PATH/bin:$HOME/gcc-64/bin:$HOME/gcc-32/bin:$PATH
              if [ ${{ inputs.ccache }} = true ]; then
                  export USE_CCACHE=1
                  make -j$(nproc --all) CROSS_COMPILE=$CLANG_PATH/bin/llvm- CROSS_COMPILE_ARM32=$CLANG_PATH/bin/llvm- CLANG_TRIPLE=aarch64-linux-android$(( ${{ inputs.android-version }} + 19 ))- CC="ccache clang" ARCH=${{ inputs.arch }} O=out ${{ inputs.extra-cmd }}
@@ -392,12 +392,12 @@ runs:
          elif [ ${{ inputs.android-ndk }} = false ] && [ ${{ inputs.aosp-gcc }} = true ]; then
              export CLANG_PATH=$HOME/clang/bin
              export PATH=${CLANG_PATH}:${PATH}
-             make -j$(nproc --all) CLANG_TRIPLE=aarch64-linux-gnu- CC=clang CROSS_COMPILE=$HOME/gcc-64/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=$HOME/gcc-32/bin/arm-linux-androideabi- ARCH=${{ inputs.arch }} O=out ${{ inputs.config }}
+             make -j$(nproc --all) CC=clang CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- ARCH=${{ inputs.arch }} O=out ${{ inputs.config }}
              if [ ${{ inputs.ccache }} = true ]; then
                  export USE_CCACHE=1
-                 make -j$(nproc --all) CLANG_TRIPLE=aarch64-linux-gnu- CC="ccache clang" CROSS_COMPILE=$HOME/gcc-64/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=$HOME/gcc-32/bin/arm-linux-androideabi- ARCH=${{ inputs.arch }} O=out ${{ inputs.extra-cmd }}
+                 make -j$(nproc --all) CC="ccache clang" CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- ARCH=${{ inputs.arch }} O=out ${{ inputs.extra-cmd }}
              else
-                 make -j$(nproc --all) CLANG_TRIPLE=aarch64-linux-gnu- CC=clang CROSS_COMPILE=$HOME/gcc-64/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=$HOME/gcc-32/bin/arm-linux-androideabi- ARCH=${{ inputs.arch }} O=out ${{ inputs.extra-cmd }}
+                 make -j$(nproc --all) CC=clang CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- ARCH=${{ inputs.arch }} O=out ${{ inputs.extra-cmd }}
              fi
          else    
              make -j$(nproc --all) CROSS_COMPILE=$HOME/gcc-64/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=$HOME/gcc-32/bin/arm-linux-androideabi- ARCH=${{ inputs.arch }} O=out ${{ inputs.config }}
